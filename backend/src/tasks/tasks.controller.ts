@@ -9,7 +9,7 @@ export class TasksController {
 
   @Get()
   findAll(@Req() req: any) {
-    return this.tasksService.findAll();
+    return this.tasksService.findAll(req.user.userId);
   }
 
   @Post()

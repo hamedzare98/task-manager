@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class TasksService {
-  async findAll() {
-    return prisma.task.findMany();
+  async findAll(userId: number) {
+    return prisma.task.findMany({ where: { userId } });
   }
 
   async create(title: string, userId: number) {
