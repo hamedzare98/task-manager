@@ -6,6 +6,7 @@ export interface Task {
   title: string;
   done: boolean;
   createdAt: string;
+  dueDate: string | null;
 }
 
 @Injectable({
@@ -20,7 +21,18 @@ export class Tasks {
     return this.http.get<Task[]>(this.apiUrl);
   }
 
-  addTask(title: string) {
-    return this.http.post<Task>(this.apiUrl, { title });
+  addTask(title: string, dueDate?: string) {
+    return this.http.post<Task>(this.apiUrl, { title, dueDate });
+  }
+
+  updateTask(
+    id: number,
+    changes: { title?: string; done?: boolean; dueDate?: string | null },
+  ) {
+    return this.http.patch<Task>(`${this.apiUrl}/${id}`, changes);
+  }
+
+  deleteTask(id: number) {
+    return this.http.delete<{ id: number }>(`${this.apiUrl}/${id}`);
   }
 }

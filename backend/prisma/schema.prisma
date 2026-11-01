@@ -17,10 +17,11 @@ model User {
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
-  done      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  done      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  dueDate   DateTime?
+  user      User      @relation(fields: [userId], references: [id])
   userId    Int
 }
