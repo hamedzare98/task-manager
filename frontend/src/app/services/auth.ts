@@ -9,12 +9,15 @@ export class Auth {
 
   constructor(private http: HttpClient) {}
 
-  register(email: string, password: string) {
-    return this.http.post<{ id: number; email: string }>(`${this.apiUrl}/register`, { email, password });
+  register(email: string, username: string, password: string) {
+    return this.http.post<{ id: number; email: string; username: string }>(
+      `${this.apiUrl}/register`,
+      { email, username, password }
+    );
   }
 
-  login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password });
+  login(identifier: string, password: string) {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { identifier, password });
   }
 
   saveToken(token: string) {

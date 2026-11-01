@@ -1,38 +1,40 @@
-<div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4" dir="rtl">
-  <div class="w-full max-w-lg bg-white/95 backdrop-blur rounded-3xl shadow-2xl p-8">
+<div class="min-h-screen bg-ink flex items-center justify-center p-4" dir="rtl">
+  <div class="w-full max-w-lg bg-cream rounded-3xl shadow-2xl p-8">
+
     <div class="flex items-center gap-3 mb-8">
-      <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl">
+      <div class="w-12 h-12 bg-ink rounded-2xl flex items-center justify-center text-brass text-2xl">
         ✓
       </div>
       <div class="flex-1">
-        <h1 class="text-2xl font-extrabold text-gray-800">لیست تسک‌ها</h1>
-        <p class="text-sm text-gray-400">{{ tasks().length }} تسک ثبت شده</p>
+        <h1 class="text-2xl font-extrabold text-ink">لیست تسک‌ها</h1>
+        <p class="text-sm text-gray-500">{{ tasks().length }} تسک ثبت شده</p>
       </div>
       <button
         (click)="onLogout()"
-        class="text-sm text-gray-400 hover:text-red-500 transition-colors"
+        class="text-sm text-gray-500 hover:text-red-600 transition-colors"
       >
         خروج
       </button>
     </div>
+
     <div class="flex gap-2 mb-8">
       <input
         type="text"
         [(ngModel)]="newTitle"
         (keyup.enter)="onAddTask()"
         placeholder="یه تسک جدید بنویس..."
-        class="flex-1 border-2 border-gray-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-400 transition-colors"
+        class="flex-1 bg-white border-2 border-stone-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-brass transition-colors"
       />
       <button
         (click)="onAddTask()"
-        class="bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold px-6 py-3 rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-200"
+        class="bg-ink hover:bg-ink-light text-cream font-semibold px-6 py-3 rounded-2xl transition-all active:scale-95"
       >
         اضافه کن
       </button>
     </div>
 
     @if (tasks().length === 0) {
-      <div class="text-center py-10 text-gray-300">
+      <div class="text-center py-10 text-stone-400">
         <div class="text-5xl mb-3">📭</div>
         <p>هنوز تسکی اضافه نکردی</p>
       </div>
@@ -40,14 +42,14 @@
 
     <ul class="space-y-3">
       @for (task of tasks(); track task.id) {
-        <li class="flex justify-between items-center bg-gray-50 hover:bg-gray-100 rounded-2xl px-4 py-3 transition-colors">
+        <li class="flex justify-between items-center bg-white border border-stone-200 rounded-2xl px-4 py-3">
           <span class="text-gray-700 font-medium">{{ task.title }}</span>
           <span
             class="text-xs font-bold px-3 py-1 rounded-full"
-            [class.bg-green-100]="task.done"
-            [class.text-green-600]="task.done"
+            [class.bg-emerald-100]="task.done"
+            [class.text-emerald-700]="task.done"
             [class.bg-amber-100]="!task.done"
-            [class.text-amber-600]="!task.done"
+            [class.text-amber-700]="!task.done"
           >
             {{ task.done ? '✓ انجام شده' : '⏳ در انتظار' }}
           </span>

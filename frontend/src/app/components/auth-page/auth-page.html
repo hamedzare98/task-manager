@@ -1,50 +1,91 @@
-<div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4" dir="rtl">
-  <div class="w-full max-w-sm bg-white/95 backdrop-blur rounded-3xl shadow-2xl p-8">
+<div class="min-h-screen bg-ink flex items-center justify-center p-4" dir="rtl">
+  <div class="w-full max-w-sm bg-cream rounded-3xl shadow-2xl p-8">
 
-    <h1 class="text-2xl font-extrabold text-gray-800 mb-1 text-center">
+    <h1 class="text-2xl font-extrabold text-ink mb-2 text-center">
       {{ isLoginMode() ? 'ورود' : 'ثبت‌نام' }}
     </h1>
-    <p class="text-sm text-gray-400 text-center mb-6">
+    <div class="w-10 h-0.5 bg-brass mx-auto mb-3"></div>
+    <p class="text-sm text-gray-500 text-center mb-6">
       به لیست تسک‌هات خوش اومدی
     </p>
 
     <form (ngSubmit)="onSubmit()" class="space-y-4">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        name="email"
-        placeholder="ایمیل"
-        required
-        class="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-400 transition-colors"
-      />
-      <input
-        type="password"
-        [(ngModel)]="password"
-        name="password"
-        placeholder="رمز عبور"
-        required
-        class="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-400 transition-colors"
-      />
+
+      @if (isLoginMode()) {
+        <input
+          type="text"
+          [(ngModel)]="identifier"
+          name="identifier"
+          placeholder="نام کاربری یا ایمیل"
+          required
+          class="w-full bg-white border-2 border-stone-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-brass transition-colors"
+        />
+      } @else {
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="ایمیل"
+          required
+          class="w-full bg-white border-2 border-stone-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-brass transition-colors"
+        />
+        <input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="نام کاربری"
+          required
+          class="w-full bg-white border-2 border-stone-200 rounded-2xl px-4 py-3 text-gray-700 focus:outline-none focus:border-brass transition-colors"
+        />
+      }
+
+      <div class="relative">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="رمز عبور"
+          required
+          class="w-full bg-white border-2 border-stone-200 rounded-2xl pl-12 pr-4 py-3 text-gray-700 focus:outline-none focus:border-brass transition-colors"
+        />
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-ink transition-colors"
+          aria-label="نمایش یا مخفی کردن رمز عبور"
+        >
+          @if (showPassword()) {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          }
+        </button>
+      </div>
 
       @if (errorMessage()) {
-        <p class="text-sm text-red-500 text-center">{{ errorMessage() }}</p>
+        <p class="text-sm text-red-600 text-center">{{ errorMessage() }}</p>
       }
 
       <button
         type="submit"
-        class="w-full bg-gradient-to-br from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 rounded-2xl transition-all active:scale-95 shadow-lg shadow-indigo-200"
+        class="w-full bg-ink hover:bg-ink-light text-cream font-semibold py-3 rounded-2xl transition-all active:scale-95"
       >
-        {{ isLoginMode() ? 'ورود' : 'ثبت‌نام' }}
+        {{ isLoginMode() ? 'ورود' : 'ثبت‌ نام' }}
       </button>
     </form>
 
-    <p class="text-sm text-gray-400 text-center mt-6">
+    <p class="text-sm text-gray-500 text-center mt-6">
       @if (isLoginMode()) {
         حساب نداری؟
-        <button type="button" (click)="toggleMode()" class="text-indigo-500 font-semibold">ثبت‌نام کن</button>
+        <button type="button" (click)="toggleMode()" class="text-brass font-semibold">ثبت‌ نام کن</button>
       } @else {
         حساب داری؟
-        <button type="button" (click)="toggleMode()" class="text-indigo-500 font-semibold">وارد شو</button>
+        <button type="button" (click)="toggleMode()" class="text-brass font-semibold">وارد شو</button>
       }
     </p>
 

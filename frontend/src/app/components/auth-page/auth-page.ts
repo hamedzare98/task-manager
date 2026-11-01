@@ -11,9 +11,13 @@ import { Auth } from '../../services/auth';
 })
 export class AuthPage {
   isLoginMode = signal(true);
-  email = '';
-  password = '';
+  showPassword = signal(false);
   errorMessage = signal('');
+
+  identifier = '';
+  email = '';
+  username = '';
+  password = '';
 
   constructor(private authService: Auth, private router: Router) {}
 
@@ -22,11 +26,15 @@ export class AuthPage {
     this.errorMessage.set('');
   }
 
+  togglePassword() {
+    this.showPassword.update(show => !show);
+  }
+
   onSubmit() {
     this.errorMessage.set('');
 
     if (this.isLoginMode()) {
-      this.authService.login(this.email, this.password).subscribe({
+      this.authService.login(this.identifier.trim(), this.password).subscribe({
         next: (res) => {
           this.authService.saveToken(res.token);
           this.router.navigate(['/']);
@@ -36,8 +44,10 @@ export class AuthPage {
         }
       });
     } else {
-      this.authService.register(this.email, this.password).subscribe({
+      this.authService.register(this.email.trim(), this.username.trim(), this.password).subscribe({
         next: () => {
+          this.identifier = this.username.trim();
+          this.password = '';
           this.isLoginMode.set(true);
           this.errorMessage.set('ثبت‌نام موفق بود، حالا وارد شو');
         },
