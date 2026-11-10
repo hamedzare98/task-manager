@@ -4,16 +4,18 @@ import {
   ConflictException,
   BadRequestException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import pkg from 'jsonwebtoken';
 const { sign } = pkg;
 
 const prisma = new PrismaClient();
-const JWT_SECRET = 'this-is-a-secret-key-change-later';
 
 @Injectable()
 export class AuthService {
+  constructor(private readonly config: ConfigService) {}
+
   async register(email: string, username: string, password: string) {
     if (username.includes('@')) {
       throw new BadRequestException('نام کاربری نمی‌تواند شامل @ باشد');
@@ -51,9 +53,11 @@ export class AuthService {
       throw new UnauthorizedException('رمز عبور اشتباه است');
     }
 
-    const token = sign({ userId: user.id, username: user.username }, JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    const token = sign(
+      { userId: user.id, username: user.username },
+      this.config.getOrThrow<string>('JWT_SECRET'),
+      { expiresIn: '7d' },
+    );
 
     return { token };
   }
