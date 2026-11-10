@@ -1,59 +1,73 @@
-# Frontend
+# Task Manager
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+A full-stack task manager built to practice modern Angular and NestJS. Users sign up, log in with their email **or** username, and manage their own tasks with due dates and overdue tracking.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Register and log in with email or username (JWT authentication, passwords hashed with bcrypt)
+- Per-user data: every user only sees and edits their own tasks
+- Create, complete, edit and delete tasks
+- Optional due date per task with an automatic "overdue" status
+- Protected routes: visitors who are not logged in are redirected to the login page, and an expired token logs the user out automatically
+- Persian (RTL) interface with a custom Tailwind theme
 
-```bash
-ng serve
-```
+## Tech stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Frontend:** Angular 22 (standalone components, signals, functional guards and interceptors), Tailwind CSS 4
+- **Backend:** NestJS (ESM), Prisma 5, PostgreSQL, bcrypt, jsonwebtoken
 
-## Code scaffolding
+## Screenshots
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+![Login](docs/screenshots/login.png)
+![Task list](docs/screenshots/task-list.png)
+![Editing a task](docs/screenshots/edit-task.png)
 
-```bash
-ng generate component component-name
-```
+## API
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Method | Path | Auth | Description |
+| --- | --- | --- | --- |
+| POST | `/auth/register` | no | Create an account (email, username, password) |
+| POST | `/auth/login` | no | Log in with email or username, returns a JWT |
+| GET | `/tasks` | yes | List the current user's tasks |
+| POST | `/tasks` | yes | Create a task |
+| PATCH | `/tasks/:id` | yes | Update title, done state or due date |
+| DELETE | `/tasks/:id` | yes | Delete a task |
 
-```bash
-ng generate --help
-```
+Protected routes expect an `Authorization: Bearer <token>` header.
 
-## Building
+## Run locally
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Requirements: Node.js 24 and a local PostgreSQL 16 server.
 
 ```bash
-ng e2e
+createdb task_manager
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Backend (http://localhost:3000):
 
-## Additional Resources
+```bash
+cd backend
+npm install
+cp .env.example .env        # then fill in DATABASE_URL and JWT_SECRET
+npx prisma migrate deploy
+npm run start:dev
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Generate a secret with `openssl rand -hex 32`.
+
+Frontend (http://localhost:4200):
+
+```bash
+cd frontend
+npm install
+npx ng serve
+```
+
+If `bcrypt` fails to load, npm 11 may have blocked its install script. Approve it with `npm install-scripts approve bcrypt` and run `npm install` again.
+
+## Project structure
+
+```
+frontend/   Angular app
+backend/    NestJS API, Prisma schema and migrations
+```
